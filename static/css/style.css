@@ -1,0 +1,10 @@
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+.login {
+    width: 60vw;
+    height: 100%;
+    padding-top: 20vh;
+}
