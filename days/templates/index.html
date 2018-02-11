@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <h1>index</h1>
+    <h1>list</h1>
+    {% for day in days %}
+        <div>{{ day }}</div>
+    {% empty %}
+        <div>비었음</div>
+    {% endfor %}
 {% endblock body %}
