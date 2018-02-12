@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,10 +6,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Limeday</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
-        <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
-        {% load static %}
+        <link rel="shortcut icon" href="{% static 'image/favicon.png' %}" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">     
         <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <script src="{% static 'js/script.js' %}"></script>
     </head>
     <body>
         {% block body %}{% endblock %}

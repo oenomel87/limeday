@@ -1,10 +1,111 @@
 html, body {
     width: 100%;
     height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1rem;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+  
+    /* Support for IE. */
+    font-feature-settings: 'liga';
 }
 
 .login {
     width: 60vw;
     height: 100%;
     padding-top: 20vh;
+}
+
+.aside {
+    position: fixed;
+    display: flex;
+    align-items: stretch;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.aside.inactive {
+    display: none;
+}
+
+.aside-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.aside aside {
+    width: 70vw;
+    max-width: 400px;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.aside * {
+    color: #00B200;
+}
+
+.aside .menu {
+    padding: 3rem 1.5rem 0;
+}
+
+.aside .menu-item {
+    padding: 0.5rem 0;
+}
+
+.favicon-author {
+    position: absolute;
+    bottom: 0;
+    width: 70vw;
+    max-width: 450px;
+    font-size: 0.3rem;
+    padding: 1rem;
+}
+
+.container {
+    height: 100%;
+}
+
+.header nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.header .icon > i {
+    font-size: 2rem;
+    color: rgba(146, 146, 146, 0.5);
+}
+
+.body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
