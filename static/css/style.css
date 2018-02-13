@@ -4,6 +4,19 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
+.input {
+    border-radius: 0;
+    border: none;
+    border-bottom: 1px solid #00B200;
+    box-shadow: none;
+}
+
+.input:focus, .input.active, .input:hover {
+    outline: none;
+    border-bottom: 1px solid #00B200;
+    box-shadow: none;
+}
+
 .material-icons {
     font-family: 'Material Icons';
     font-weight: normal;
@@ -29,10 +42,36 @@ html, body {
     font-feature-settings: 'liga';
 }
 
+.title {
+    color: #00B200;
+}
+
 .login {
-    width: 60vw;
+    width: 80vw;
+    max-width: 400px;
     height: 100%;
-    padding-top: 20vh;
+    padding-top: 10rem;
+}
+
+.login .label {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+.submit-btn {
+    padding-top: 1rem;
+}
+
+.button {
+    background: #00B200;
+    color: #ffffff;
+    border-color: #00B200;
+}
+
+.submit-btn .button {
+    display: block;
+    width: 100%;
+    height: 3rem;
 }
 
 .aside {
@@ -93,9 +132,11 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
     padding: 1rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .header .icon > i {
