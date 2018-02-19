@@ -9,10 +9,25 @@ Vue.component('ddays', {
                 <div class="dday">{{ ddayCalc() }}</div>
                 <div class="dday-name">{{ ddayName() }}</div>
             </div>
-            <button @click="prevCard">prev</button>
-            <button @click="nextCard">next</button>
         </div>
     `,
+
+    mounted: function() {
+        var self = this;
+        var hammer = new Hammer.Manager(document.querySelector('.ddays'));
+        var swipe = new Hammer.Swipe({
+            direction: Hammer.DIRECTION_HORIZONTAL,
+            threshold: 100
+        });
+        hammer.add([swipe]);
+        hammer.on('swipeleft swiperight', function(evt) {
+            if(evt.type === 'swipeleft') {
+                self.nextCard();
+            } else if(evt.type === 'swiperight') {
+                self.prevCard();
+            }
+        });
+    },
 
     methods: {
         ddayCalc: function() {
@@ -48,7 +63,7 @@ Vue.component('ddays', {
             }
         },
 
-        prevCard: function(evt) {
+        prevCard: function() {
             if(this.cursor === 0) {
                 this.$emit('changecard', this.ddays.length - 1);
             } else {
@@ -56,7 +71,7 @@ Vue.component('ddays', {
             }
         },
 
-        nextCard: function(evt) {
+        nextCard: function() {
             if(this.cursor === this.ddays.length -1) {
                 this.$emit('changecard', 0);
             } else {
@@ -81,23 +96,6 @@ _dday = new Vue({
 
     created: function() {
         this.getDDays();
-    },
-
-    mounted: function() {
-        var self = this;
-        var hammer = new Hammer.Manager(document.querySelector('.body'));
-        var swipe = new Hammer.Swipe({
-            direction: Hammer.DIRECTION_HORIZONTAL,
-            threshold: 100
-        });
-        hammer.add([swipe]);
-        hammer.on('swipeleft swiperight', function(evt) {
-            if(evt.type === 'swipeleft') {
-                
-            } else if(evt.type === 'swiperight') {
-
-            }
-        });
     },
 
     data: {
