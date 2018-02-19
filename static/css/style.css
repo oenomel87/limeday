@@ -40,6 +40,8 @@ html, body {
   
     /* Support for IE. */
     font-feature-settings: 'liga';
+
+    cursor: pointer;
 }
 
 .title {
@@ -107,12 +109,17 @@ html, body {
     color: #00B200;
 }
 
+.aside .hero-body {
+    padding: 5rem 1rem 3rem 2rem;
+}
+
 .aside .menu {
-    padding: 3rem 1.5rem 0;
+    padding: 2rem 0 2rem 2rem;;
 }
 
 .aside .menu-item {
-    padding: 0.5rem 0;
+    padding: 1rem 0;
+    cursor: pointer;
 }
 
 .favicon-author {
@@ -139,14 +146,101 @@ html, body {
     justify-content: space-between;
 }
 
+.account {
+    display: flex;
+    justify-content: space-between;
+    width: 5.5rem;
+}
+
+.account .user {
+    color: rgba(146, 146, 146, 1);
+    cursor: pointer;
+}
+
 .header .icon > i {
     font-size: 2rem;
     color: rgba(146, 146, 146, 0.5);
 }
 
 .body {
+    height: 100%;
+}
+
+.ddays {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+.dday-card {
+    text-align: center;
+}
+
+.dday {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.floating {
+    position: absolute;
+    padding: 0 2rem 2rem 0;
+    bottom: 0;
+    right: 0;
+}
+
+.floating-btn-cont {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+
+.floating-label {
+    padding-right: 1rem;
+    color: #ffffff;
+}
+
+.floating-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 3px 4px 0 #909090;
+    cursor: pointer;
+}
+
+.trigger-btn {
+    background: #00B200;
+    color: #ffffff;
+}
+
+.floating-btn .material-icons {
+    font-size: 1.3rem;
+}
+
+.submenu {
+    position: fixed;
+    display: flex;
+    align-items: stretch;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.submenu.inactive {
+    display: none;
+}
+
+.submenu-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-color: rgba(0, 0, 0, 0.5);
 }
