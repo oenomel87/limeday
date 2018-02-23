@@ -253,29 +253,78 @@ html, body {
     background: #ffffff;
 }
 
-.dialog .head {
+.dialog .dialog-head {
     display: flex;
     align-items: center;
-    padding: 0.7rem;
+    padding: 1rem;
     background: #00B200;
     color: #ffffff;
-    box-shadow: 0 3px 4px 0 #c5c5c5;
+    box-shadow: 0 3px 4px 0 #bdbdbd;
+    font-size: 1.1rem;
+    font-weight: bold;
 }
-
 
 .dialog .close-btn {
     display: flex;
-    flex: 0.2;
-    font-weight: bold;
+    padding-right: 1rem;
 }
 
-.dialog .head i {
+.dialog .dialog-head i {
     font-size: 1.3rem;
-    font-weight: bold;
 }
 
 .dialog .save-btn {
     flex: 1;
     display: inline-flex;
     justify-content: flex-end;
+    font-weight: normal;
+}
+
+.dialog .dialog-body {
+    padding: 1rem 0;
+}
+
+.input-group {
+    position: relative;
+    padding: 1.5rem 1rem 1rem;
+}
+
+.input-group label {
+    position: absolute;
+    top: 1.5rem;
+    z-index: -1;
+    font-size: 1.2rem;
+    color: #a2a2a2;
+}
+
+.input-group label.focus {
+    top: 0.2rem;
+    font-size: 0.8rem;
+    color: #00B200;
+}
+
+.input-group label.filled {
+    top: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.input-group .input-wrap {
+    width: 100%;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #cecece;
+}
+
+.input-group .input-wrap.focus {
+    border-bottom: 1px solid #00B200;
+}
+
+.input-group input {
+    width: 100%;
+    font-size: 1rem;
+    border: none;
+    background: transparent;
+}
+
+.input-group input:focus {
+    outline: none;
 }
