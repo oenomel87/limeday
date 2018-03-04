@@ -395,10 +395,6 @@ html, body {
     color: #a2a2a2;
 }
 
-#datepicker .calendar .week > div.initday {
-    color: #00B200;
-}
-
 #datepicker .calendar .week > div {
     display: flex;
     margin: 0 auto;
@@ -407,6 +403,11 @@ html, body {
     border-radius: 50%;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+}
+
+#datepicker .calendar .week > div.today {
+    color: #00B200;
 }
 
 #datepicker .calendar .week > div.pick {

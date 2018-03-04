@@ -19,3 +19,10 @@ def ddays(request):
         'ddays': serializers.serialize('json', Day.objects.filter(user=request.user).order_by('timestamp'))
     }
     return JsonResponse(data)
+
+@login_required
+def save(request):
+    response = {
+        'result': 'SUCCESS'
+    }
+    return JsonResponse(response)
