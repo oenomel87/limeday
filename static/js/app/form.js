@@ -150,6 +150,8 @@ _formModal = new Vue({
         },
 
         save: function() {
+            var self = this;
+
             if(this.formLocker) {
                 return;
             } else {
@@ -171,10 +173,14 @@ _formModal = new Vue({
                 if(res.status === 200 && res.data.result === 'SUCCESS') {
                     alert('저장되었습니다');
                     location.reload();
+                } else {
+                    alert('저장할 수 없습니다.');
                 }
+                self.formLocker = false;
             })
             .catch(function(err) {
                 console.error(err);
+                self.formLocker = false;
             })
         }
     }

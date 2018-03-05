@@ -1,3 +1,5 @@
+from datetime import date, datetime
+import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -22,7 +24,18 @@ def ddays(request):
 
 @login_required
 def save(request):
-    response = {
-        'result': 'SUCCESS'
-    }
+    request_body = request.body.decode('utf-8')
+    post = json.loads(request_body)
+    try:
+        dday = Day(day_name=post['day_name']
+            , dday=datetime.strptime(post['dday'], '%Y-%m-%d'), user=request.user)
+    except (KeyError):
+        response = {
+            'result': 'FAIL'
+        }
+    else:
+        dday.save()
+        response = {
+            'result': 'SUCCESS'
+        }
     return JsonResponse(response)

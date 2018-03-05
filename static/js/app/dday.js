@@ -6,8 +6,8 @@ Vue.component('ddays', {
     template: `
         <div class="ddays">
             <div class="dday-card">
-                <div class="dday">{{ ddayCalc() }}</div>
-                <div class="dday-name">{{ ddayName() }}</div>
+                <div class="dday">{{ dday }}</div>
+                <div class="dday-name">{{ ddayName }}</div>
             </div>
         </div>
     `,
@@ -29,22 +29,22 @@ Vue.component('ddays', {
         });
     },
 
-    methods: {
-        ddayCalc: function() {
+    computed: {
+        dday: function() {
             if(this.ddays.length === 0) {
                 return 'D day를 추가해보세요';
             }
             var DateTime = luxon.DateTime;
-            diff = DateTime.fromISO(this.ddays[this.cursor].fields.dday)
+            diff = Math.floor(DateTime.fromISO(this.ddays[this.cursor].fields.dday)
                 .diff(DateTime.local(), 'days')
-                .as('days');
+                .as('days'));
             if(diff === 0) {
                 return 'D - day';
             } else if(diff < 0) {
                 return 'D + ' + (-1 * diff);
             } else {
-                return 'D - ' + Math.floor(diff);
-            }
+                return 'D - ' + diff;
+            } 
         },
 
         ddayName: function() {
@@ -52,8 +52,10 @@ Vue.component('ddays', {
                 return '';
             }
             return this.ddays[this.cursor].fields.day_name
-        },
+        }
+    },
 
+    methods: {
         changeCard: function(evt) {
             var action = evt.target.dataset.action;
             if(action === 'prev') {
