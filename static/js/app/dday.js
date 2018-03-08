@@ -43,8 +43,8 @@ Vue.component('ddays', {
             } else if(diff < 0) {
                 return 'D + ' + (-1 * diff);
             } else {
-                return 'D - ' + diff;
-            } 
+                return 'D - ' + (diff + 1);
+            }
         },
 
         ddayName: function() {

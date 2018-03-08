@@ -27,8 +27,7 @@ def save(request):
     request_body = request.body.decode('utf-8')
     post = json.loads(request_body)
     try:
-        dday = Day(day_name=post['day_name']
-            , dday=datetime.strptime(post['dday'], '%Y-%m-%d'), user=request.user)
+        dday = setDDayData(post)
     except (KeyError):
         response = {
             'result': 'FAIL'
@@ -39,3 +38,15 @@ def save(request):
             'result': 'SUCCESS'
         }
     return JsonResponse(response)
+
+def setDDayData(data):
+    if data['pk'] == -1:
+        print('new dday', str(data['pk']))
+        dday = Day(day_name=data['day_name']
+            , dday=datetime.strptime(data['dday'], '%Y-%m-%d'), user=request.user)
+    else:
+        print('update dday', str(data['pk']))
+        dday = Day.objects.get(pk=data['pk'])
+        dday.day_name = data['day_name']
+        dday.dday = datetime.strptime(data['dday'], '%Y-%m-%d')
+    return dday

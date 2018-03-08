@@ -1,6 +1,6 @@
 Vue.component('form-input', {
 
-    props: ['tag', 'name'],
+    props: ['tag', 'name', 'value'],
 
     template: `
         <div class="input-group-wrap">
@@ -10,6 +10,9 @@ Vue.component('form-input', {
                     <input
                         type="text"
                         :name="tag"
+                        :value="value"
+                        maxlength="20"
+                        :placeholder="placeholder"
                         @focusin="setFocus"
                         @focusout="setFocus"
                         @keyup="inputVal">
@@ -19,7 +22,9 @@ Vue.component('form-input', {
     `,
 
     computed: {
-
+        placeholder: function() {
+            return this.focus ? '20자 까지 가능합니다.' : '';
+        },
         isFocusLabel: function() {
             return {
                 focus: this.focus,
@@ -36,8 +41,7 @@ Vue.component('form-input', {
 
     data: function() {
         return {
-            focus: false,
-            value: ''
+            focus: false
         }
     },
 
@@ -47,7 +51,7 @@ Vue.component('form-input', {
         },
 
         inputVal: function(evt) {
-            this.value = evt.target.value;
+            this.$emit('inputval', evt.target.value);
         }
     }
 });
@@ -93,13 +97,15 @@ _formModal = new Vue({
                     <span>D Day 관리</span>
                 </div>
                 <div class="save-btn">
-                    <span @click="save">저장</span>
+                    <span @click="save">저장하기</span>
                 </div>
             </div>
             <div class="dialog-body">
                 <form-input
                     name="D-Day 이름"
                     tag="name"
+                    :value="ddayName"
+                    @inputval="setDDayName"
                 />
                 <date-input
                     :dday="dday"
@@ -125,13 +131,23 @@ _formModal = new Vue({
 
     data: {
         status: 'hide',
+        pk: -1,
         dday: luxon.DateTime.local(),
+        ddayName: '',
         showPicker: false,
-        formLocker: false
+        formLocker: false,
+        isModify: false
     },
 
     methods: {
-        show: function() {
+        show: function(isModify) {
+            var DateTime = luxon.DateTime;
+            if(isModify) {
+                this.pk = _dday.$data.ddays[_dday.$data.cursor].pk;
+                this.dday = DateTime.fromISO(_dday.$data.ddays[_dday.$data.cursor].fields.dday);
+                this.ddayName = _dday.$data.ddays[_dday.$data.cursor].fields.day_name;
+                this.isModify = true;
+            }
             this.status = 'show';
             _submenu.close()
         },
@@ -144,18 +160,25 @@ _formModal = new Vue({
             this.showPicker = !this.showPicker;
         },
 
+        setDDayName: function(ddayName) {
+            this.ddayName = ddayName;
+        },
+
         submitDate: function(pickDate) {
             this.dday = pickDate;
             this.showPicker = false;
         },
 
         save: function() {
-            var self = this;
-
+            var data = this.getFormData();
             if(this.formLocker) {
                 return;
             } else {
                 this.formLocker = true;
+            }
+
+            if(!this.valid(data)) {
+                return;
             }
 
             axios({
@@ -164,24 +187,47 @@ _formModal = new Vue({
                 headers: {
                     'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
                 },
-                data: {
-                    day_name: document.querySelector('.dialog input[name=name]').value,
-                    dday: document.querySelector('.dialog input[name=dday]').value
-                }
+                data: data
             })
-            .then(function(res) {
-                if(res.status === 200 && res.data.result === 'SUCCESS') {
-                    alert('저장되었습니다');
-                    location.reload();
-                } else {
-                    alert('저장할 수 없습니다.');
-                }
-                self.formLocker = false;
-            })
-            .catch(function(err) {
-                console.error(err);
-                self.formLocker = false;
-            })
+            .then(this.submitCallback)
+            .catch(this.failCallback);
+        },
+
+        getFormData: function() {
+            return {
+                pk: this.pk,
+                day_name: document.querySelector('.dialog input[name=name]').value,
+                dday: document.querySelector('.dialog input[name=dday]').value
+            }
+        },
+
+        submitCallback: function(res) {
+            if(res.status === 200 && res.data.result === 'SUCCESS') {
+                alert('저장되었습니다');
+                location.reload();
+            } else {
+                alert('저장할 수 없습니다.');
+            }
+            this.formLocker = false;
+        },
+
+        failCallback: function(err) {
+            console.error(err);
+            this.formLocker = false;
+        },
+
+        valid: function(data) {
+            if(data.day_name == null || data.day_name === '') {
+                alert('D day 이름을 입력해주세요!');
+                return false;
+            }
+
+            if(data.dday == null || data.dday === '') {
+                alert('날짜를 입력해주세요!');
+                return false;
+            }
+
+            return true;
         }
     }
 });
