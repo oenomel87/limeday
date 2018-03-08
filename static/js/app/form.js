@@ -1,61 +1,3 @@
-Vue.component('form-input', {
-
-    props: ['tag', 'name', 'value'],
-
-    template: `
-        <div class="input-group-wrap">
-            <div class="input-group">
-                <label :class="isFocusLabel">{{ name }}</label>
-                <div class="input-wrap" :class="isFocusInput">
-                    <input
-                        type="text"
-                        :name="tag"
-                        :value="value"
-                        maxlength="20"
-                        :placeholder="placeholder"
-                        @focusin="setFocus"
-                        @focusout="setFocus"
-                        @keyup="inputVal">
-                </div>
-            </div>
-        </div>
-    `,
-
-    computed: {
-        placeholder: function() {
-            return this.focus ? '20자 까지 가능합니다.' : '';
-        },
-        isFocusLabel: function() {
-            return {
-                focus: this.focus,
-                filled: this.value.length > 0
-            }
-        },
-
-        isFocusInput: function() {
-            return {
-                focus: this.focus
-            }
-        }
-    },
-
-    data: function() {
-        return {
-            focus: false
-        }
-    },
-
-    methods: {
-        setFocus: function() {
-            this.focus = !this.focus;
-        },
-
-        inputVal: function(evt) {
-            this.$emit('inputval', evt.target.value);
-        }
-    }
-});
-
 Vue.component('date-input', {
 
     props: ['dday'],
@@ -102,9 +44,10 @@ _formModal = new Vue({
             </div>
             <div class="dialog-body">
                 <form-input
-                    name="D-Day 이름"
-                    tag="name"
+                    label="D-Day 이름"
+                    name="name"
                     :value="ddayName"
+                    placeholder="20자 까지 가능합니다"
                     @inputval="setDDayName"
                 />
                 <date-input

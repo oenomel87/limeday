@@ -49,19 +49,25 @@ html, body {
 }
 
 .login {
-    width: 80vw;
+    width: 70vw;
     max-width: 400px;
     height: 100%;
     padding-top: 10rem;
 }
 
-.login .label {
-    margin-top: 1rem;
-    margin-bottom: 0;
+.login-form {
+    padding-top: 1rem;
 }
 
 .submit-btn {
+    padding-top: 2rem;
+}
+
+.join-link {
     padding-top: 1rem;
+    font-size: 0.9rem;
+    text-align: right;
+    color: #00B200;
 }
 
 .button {
@@ -281,14 +287,14 @@ html, body {
 }
 
 .dialog .dialog-body {
-    padding: 1rem 0;
+    padding: 1rem 1.5rem;
     margin: 0 auto;
     max-width: 600px;
 }
 
 .input-group {
     position: relative;
-    padding: 1.5rem 1rem 1rem;
+    padding: 1.5rem 0 0.2rem;;
 }
 
 .input-group label {
@@ -297,8 +303,10 @@ html, body {
     z-index: -1;
     font-size: 1.2rem;
     color: #a2a2a2;
-    -webkit-transition: top 0.3s;
-    transition: top 0.3s;
+    -webkit-transition-property: top, font-size, color;
+    transition-property: top, font-size, color;
+    -webkit-transition-duration: 0.1s;
+    transition-duration: 0.1s;
 }
 
 .input-group label.focus {
@@ -331,6 +339,13 @@ html, body {
 
 .input-group input:focus {
     outline: none;
+}
+
+.input-group .help-text {
+    padding-top: 0.5rem;
+    line-height: 0.8rem;
+    font-size: 0.8rem;
+    color: #909090;
 }
 
 #datepicker {

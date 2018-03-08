@@ -1,26 +1,25 @@
 {% extends "../base.html" %}
 
+{% load static %}
+
 {% block body %}
 <div class="container login">
     <h1 class="title">limeday</h1>
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ next }}" />
-        <div class="field">
-            <label class="label">아이디</label>
-            <div class="control">
-                <input type="text" class="input" name="username" maxlength="15" placeholder="아이디를 입력해주세요">
+    <div class="login-form">
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <div id="login-form"></div>
+            <div class="submit-btn">
+                <input type="submit" class="button btn-block" value="로그인" />
             </div>
-        </div>
-        <div class="field">
-            <label class="label">비밀번호</label>
-            <div class="control">
-                <input type="password" class="input" name="password" maxlength="20" placeholder="비밀번호를 입력해주세요">
+            <div class="join-link">
+                <span onclick="_join.show()">아직 아이디가 없나요?</span>
             </div>
-        </div>
-        <div class="submit-btn">
-            <input type="submit" class="button btn-block" value="로그인" />
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+<div class="dialog"></div>
+<script src="{% static 'js/app/login.js' %}"></script>
+<script src="{% static 'js/app/join.js' %}"></script>
 {% endblock body %}
