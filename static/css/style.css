@@ -309,10 +309,18 @@ html, body {
     transition-duration: 0.1s;
 }
 
+.input-group.error label {
+    color: #e23b3b;
+}
+
 .input-group label.focus {
     top: 0.3rem;
     font-size: 0.8rem;
     color: #00B200;
+}
+
+.input-group.error label.focus {
+    color: #e23b3b;
 }
 
 .input-group label.filled {
@@ -326,7 +334,11 @@ html, body {
     border-bottom: 1px solid #cecece;
 }
 
-.input-group .input-wrap.focus {
+.input-group.error .input-wrap {
+    border-bottom: 1px solid #e23b3b;
+}
+
+.input-group:not(.error) .input-wrap.focus {
     border-bottom: 1px solid #00B200;
 }
 
@@ -346,6 +358,10 @@ html, body {
     line-height: 0.8rem;
     font-size: 0.8rem;
     color: #909090;
+}
+
+.input-group.error .help-text {
+    color: #e23b3b;
 }
 
 #datepicker {

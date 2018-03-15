@@ -1,10 +1,10 @@
 Vue.component('form-input', {
 
-    props: ['type', 'label', 'name', 'value', 'placeholder', 'msg'],
+    props: ['type', 'label', 'name', 'value', 'placeholder', 'valid'],
 
     template: `
         <div class="input-group-wrap">
-            <div class="input-group">
+            <div class="input-group" :class="hasError">
                 <label :class="isFocusLabel">{{ label }}</label>
                 <div class="input-wrap" :class="isFocusInput">
                     <input
@@ -18,7 +18,7 @@ Vue.component('form-input', {
                         @keyup="inputVal">
                 </div>
                 <div class="help-text">
-                    <span></span>
+                    <span>{{ helpText }}</span>
                 </div>
             </div>
         </div>
@@ -50,7 +50,13 @@ Vue.component('form-input', {
         },
 
         helpText: function() {
-            return this.msg == null
+            return this.valid == null || !this.valid.hasOwnProperty('message') ? '' : this.valid.message;
+        },
+
+        hasError: function() {
+            return {
+                error: this.valid != null && !this.valid.valid
+            }
         }
     },
 
