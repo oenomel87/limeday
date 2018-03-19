@@ -2,7 +2,7 @@ _join = new Vue({
     el: '.dialog',
 
     template: `
-        <div class="dialog" :style="dialogStatus">
+        <div class="dialog join" :style="dialogStatus">
             <div class="dialog-head">
                 <div class="close-btn">
                     <i class="material-icons" @click="hide">close</i>
@@ -111,16 +111,30 @@ _join = new Vue({
         },
 
         isDuplicate: function() {
+            if(this.locker) {
+                return;
+            } else {
+                this.locker = true;
+            }
             axios({
                 method: 'post',
-                url: '',
+                url: '/id',
                 headers: {
                     'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
                 },
                 data: { username: document.querySelector('.dialog input[name=username]').value }
             })
-            .then()
-            .catch();
+            .then(this.idCheck)
+            .catch(this.failCallback);
+        },
+
+        idCheck: function(res) {
+            if(res.data.result === 'POSSIBLE') {
+                this.usernameValid = { valid: true, message: '사용 가능한 아이디 입니다.' };
+            } else {
+                this.usernameValid = { valid: false, message: '이미 사용중인 아이디 입니다.' };
+            }
+            this.locker = false;
         },
 
         passwordCheck: function() {
@@ -141,15 +155,18 @@ _join = new Vue({
         },
 
         join: function() {
+            if(this.locker) {
+                return;
+            }
             var data = {
                 username: this.username,
                 password: this.password
             }
-            if(!this.locker && this.valid()) {
+            if(this.valid()) {
                 this.locker = true;
                 axios({
                     method: 'post',
-                    url: 'save',
+                    url: '/join',
                     headers: {
                         'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
                     },
@@ -157,21 +174,31 @@ _join = new Vue({
                 })
                 .then(this.submitCallback)
                 .catch(this.failCallback);
+            } else {
+                alert('입력하신 아이디 / 비밀번호를 확인해주세요.')
             }
         },
 
         submitCallback: function(res) {
+            if(res.data.result === 'SUCCESS') {
+                alert('가입되었습니다.');
+                location.href = '/';
+            } else {
+                alert('입력하신 아이디 / 비밀번호를 확안해주세요');
+            }
             this.locker = false;
         },
 
         failCallback: function(err) {
+            console.error(err);
             this.locker = false;
         },
 
         valid: function() {
             return this.username.length >= 6 && this.username.length <= 15
-                && this.password.length >= 6 && this.password <= 15
-                && this.password === this.confirm;
+                && this.password.length >= 6 && this.password.length <= 15
+                && this.password === this.confirm
+                && document.querySelectorAll('.dialog.join .error').length === 0;
         }
     }
 });

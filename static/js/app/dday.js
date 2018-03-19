@@ -21,7 +21,9 @@ Vue.component('ddays', {
         });
         hammer.add([swipe]);
         hammer.on('swipeleft swiperight', function(evt) {
-            if(evt.type === 'swipeleft') {
+            if(self.ddays.length  === 0) {
+                return;
+            } else if(evt.type === 'swipeleft') {
                 self.nextCard();
             } else if(evt.type === 'swiperight') {
                 self.prevCard();

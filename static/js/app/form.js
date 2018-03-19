@@ -85,7 +85,7 @@ _formModal = new Vue({
     methods: {
         show: function(isModify) {
             var DateTime = luxon.DateTime;
-            if(isModify) {
+            if(_dday.$data.ddays.length > 0 && isModify) {
                 this.pk = _dday.$data.ddays[_dday.$data.cursor].pk;
                 this.dday = DateTime.fromISO(_dday.$data.ddays[_dday.$data.cursor].fields.dday);
                 this.ddayName = _dday.$data.ddays[_dday.$data.cursor].fields.day_name;

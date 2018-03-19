@@ -20,6 +20,8 @@
     </div>
 </div>
 <div class="dialog"></div>
+<input type="hidden" name="idcheckUrl" value="{% url 'idcheck' %}">
+<input type="hidden" name="joinUrl" value="{% url 'join' %}">
 <script src="{% static 'js/app/login.js' %}"></script>
 <script src="{% static 'js/app/join.js' %}"></script>
 {% endblock body %}
