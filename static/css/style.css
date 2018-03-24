@@ -90,10 +90,11 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
+    visibility: hidden;
 }
 
-.aside.inactive {
-    display: none;
+.aside.active {
+    visibility: visible;
 }
 
 .aside-bg {
@@ -108,7 +109,13 @@ html, body {
     width: 70vw;
     max-width: 400px;
     height: 100%;
+    margin-left: -70vw;
     background-color: #ffffff;
+    transition: margin-left 0.2s;
+}
+
+.aside.active aside {
+    margin-left: 0;
 }
 
 .aside * {

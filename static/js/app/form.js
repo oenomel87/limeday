@@ -27,10 +27,10 @@ Vue.component('date-input', {
 });
 
 _formModal = new Vue({
-    el: '.dialog',
+    el: '.dialog.dday-form',
 
     template: `
-        <div class="dialog" :style="dialogStatus">
+        <div class="dialog dday-form" :style="dialogStatus">
             <div class="dialog-head">
                 <div class="close-btn">
                     <i class="material-icons" @click="hide">close</i>
@@ -47,7 +47,7 @@ _formModal = new Vue({
                     label="D-Day 이름"
                     name="name"
                     :value="ddayName"
-                    placeholder="20자 까지 가능합니다"
+                    :options="ddayInputOptions"
                     @inputval="setDDayName"
                 />
                 <date-input
@@ -79,7 +79,12 @@ _formModal = new Vue({
         ddayName: '',
         showPicker: false,
         formLocker: false,
-        isModify: false
+        isModify: false,
+
+        ddayInputOptions: {
+            maxlength: 20,
+            placeholder: '20자 까지 가능합니다'
+        }
     },
 
     methods: {

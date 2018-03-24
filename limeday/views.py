@@ -19,7 +19,6 @@ def join(request):
     post = json.loads(request.body.decode('utf-8'))
     form = UserForm(post)
     response = {}
-    print(form.errors)
     if form.is_valid():
         new_user = User.objects.create_user(**form.cleaned_data)
         login(request, new_user)

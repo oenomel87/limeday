@@ -3,9 +3,11 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core import serializers
 
 from .models import Day
+from limeday.forms import UserForm
 
 @login_required
 def index(request):
@@ -24,8 +26,7 @@ def ddays(request):
 
 @login_required
 def save(request):
-    request_body = request.body.decode('utf-8')
-    post = json.loads(request_body)
+    post = json.loads(request.body.decode('utf-8'))
     try:
         dday = setDDayData(post)
     except (KeyError):
@@ -37,6 +38,19 @@ def save(request):
         response = {
             'result': 'SUCCESS'
         }
+    return JsonResponse(response)
+
+@login_required
+def change_userdata(request):
+    post = json.loads(request.body.decode('utf-8'))
+    response = {}
+    try:
+        user = User.objects.get(username=request.user.username)
+        user.set_password(post['password'])
+        user.save()
+        response['result'] = 'SUCCESS'
+    except:
+        response['result'] = 'FAIL'
     return JsonResponse(response)
 
 def setDDayData(data):

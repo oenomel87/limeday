@@ -7,7 +7,7 @@ _login = new Vue({
                 label="아이디"
                 name="username"
                 :value="username"
-                placeholder="아이디를 입력해주세요"
+                :options="usernameOptions"
                 @inputval="setUsername"
             />
             <form-input
@@ -15,7 +15,7 @@ _login = new Vue({
                 type="password"
                 name="password"
                 :value="password"
-                placeholder="비멀번호를 입력해주세요"
+                :options="passwordOptions"
                 @inputval="setPassword"
             />
         </div>
@@ -23,7 +23,19 @@ _login = new Vue({
 
     data: {
         username: '',
-        password: ''
+        password: '',
+
+        usernameOptions: {
+            type: 'email',
+            placeholder: '아이디를 입력해주세요',
+            maxlength: 15
+        },
+
+        passwordOptions: {
+            type: 'password',
+            placeholder: '비밀번호를 입력해주세요',
+            maxlength: 15
+        }
     },
 
     methods: {

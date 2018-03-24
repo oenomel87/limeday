@@ -1,6 +1,6 @@
 Vue.component('form-input', {
 
-    props: ['type', 'label', 'name', 'value', 'placeholder', 'valid'],
+    props: ['label', 'name', 'value', 'valid', 'options'],
 
     template: `
         <div class="input-group-wrap">
@@ -8,11 +8,12 @@ Vue.component('form-input', {
                 <label :class="isFocusLabel">{{ label }}</label>
                 <div class="input-wrap" :class="isFocusInput">
                     <input
-                        :type="inputType"
+                        :type="type"
                         :name="name"
                         :value="value"
-                        maxlength="20"
+                        :maxlength="maxlength"
                         :placeholder="placeholderMessage"
+                        :readonly="readonly"
                         @focusin="setFocus"
                         @focusout="setFocus"
                         @keyup="inputVal">
@@ -25,12 +26,12 @@ Vue.component('form-input', {
     `,
 
     computed: {
-        inputType: function() {
-            return this.type == null ? 'text' : this.type;
+        type: function() {
+            return this.options == null || !this.options.hasOwnProperty('type') ? 'text' : this.options.type;
         },
 
         placeholderMessage: function() {
-            if(this.placeholder == null || this.placeholder === '') {
+            if(this.options == null || !this.options.hasOwnProperty('placeholder')) {
                 return '';
             }
             return this.focus ? this.placeholder : '';
@@ -57,6 +58,14 @@ Vue.component('form-input', {
             return {
                 error: this.valid != null && !this.valid.valid
             }
+        },
+
+        readonly: function() {
+            return this.options != null && this.options.hasOwnProperty('readonly') ? this.options.readonly : false;
+        },
+
+        maxlength: function() {
+            return this.options == null || !this.options.hasOwnProperty('maxlength') ? 20 : this.options.maxlength;
         }
     },
 

@@ -1,5 +1,5 @@
 _join = new Vue({
-    el: '.dialog',
+    el: '.dialog.join',
 
     template: `
         <div class="dialog join" :style="dialogStatus">
@@ -8,10 +8,10 @@ _join = new Vue({
                     <i class="material-icons" @click="hide">close</i>
                 </div>
                 <div class="dialog-title">
-                    <span>회원가입</span>
+                    <span>{{ title }}</span>
                 </div>
                 <div class="save-btn">
-                    <span @click="join">가입하기</span>
+                    <span @click="join">{{ buttonTitle }}</span>
                 </div>
             </div>
             <div class="dialog-body">
@@ -20,25 +20,23 @@ _join = new Vue({
                     name="username"
                     :value="username"
                     :valid="usernameValid"
-                    placeholder="6자 이상 15자 이하의 영문, 숫자"
+                    :options="usernameOptions"
                     @inputval="setUsername"
                 />
                 <form-input
-                    type="password"
                     label="비밀번호"
                     name="password"
                     :value="password"
                     :valid="passwordValid"
-                    placeholder="6자 이상 15자 이하의 영문, 숫자"
+                    :options="passwordOptions"
                     @inputval="setPassword"
                 />
                 <form-input
-                    type="password"
                     label="비밀번호 확인"
                     name="confirm"
                     :value="confirm"
                     :valid="passwordConfirmValid"
-                    placeholder="6자 이상 15자 이하의 영문, 숫자"
+                    :options="passwordOptions"
                     @inputval="setConfirm"
                 />
             </div>
@@ -47,7 +45,11 @@ _join = new Vue({
 
     watch: {
         status: function() {
-            this.username = '';
+            if(this.type !== 'join') {
+                this.username = this.originUsername;
+            } else {
+                this.username = '';
+            }
             this.password = '';
             this.confirm = '';
             this.usernameValid = { valid: true, message: '' };
@@ -61,18 +63,44 @@ _join = new Vue({
             return {
                 display: this.status === 'hide' ? 'none' : 'block'
             };
+        },
+
+        title: function() {
+            return this.type === 'profile' ? 'My Profile' : 'Sign up';
+        },
+
+        buttonTitle: function() {
+            return this.type === 'profile' ? '변경하기' : '가입하기';
+        },
+
+        originUsername: function() {
+            return document.querySelector('.aside aside .subtitle').textContent.replace('@', '');
         }
     },
 
     data: {
         status: 'hide',
+        type: 'join',
         username: '',
         password: '',
         confirm: '',
         usernameValid: { valid: true, message: '' },
         passwordValid: { valid: true, message: '' },
         passwordConfirmValid: { valid: true, message: '' },
-        locker: false
+        locker: false,
+
+        usernameOptions: {
+            type: 'email',
+            placeholder: '6자 이상 15자 이하의 영문, 숫자',
+            maxlength: 15,
+            readonly: true
+        },
+
+        passwordOptions: {
+            type: 'password',
+            placeholder: '6자 이상 15자 이하의 영문, 숫자',
+            maxlength: 15
+        }
     },
 
     methods: {
@@ -82,8 +110,15 @@ _join = new Vue({
 
         hide: function() {
             this.status = 'hide';
-            _login.$data.username = '';
-            _login.$data.password = '';
+            if(this.type === 'join') {
+                _login.$data.username = '';
+                _login.$data.password = '';
+            }
+        },
+
+        profile: function() {
+            this.status = 'show';
+            this.type = 'profile';
         },
 
         setUsername: function(username) {
@@ -111,7 +146,10 @@ _join = new Vue({
         },
 
         isDuplicate: function() {
-            if(this.locker) {
+            if(this.type === 'profile' && this.username === this.originUsername) {
+                this.usernameValid = { valid: true, message: '' };
+                return;
+            } else if(this.locker) {
                 return;
             } else {
                 this.locker = true;
@@ -157,34 +195,39 @@ _join = new Vue({
         join: function() {
             if(this.locker) {
                 return;
-            }
-            var data = {
-                username: this.username,
-                password: this.password
-            }
-            if(this.valid()) {
-                this.locker = true;
-                axios({
-                    method: 'post',
-                    url: '/join',
-                    headers: {
-                        'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
-                    },
-                    data: data
-                })
-                .then(this.submitCallback)
-                .catch(this.failCallback);
+            } else if(this.valid()) {
+                this.signUp();
             } else {
-                alert('입력하신 아이디 / 비밀번호를 확인해주세요.')
+                alert('입력하신 정보를 확인해주세요.')
             }
         },
 
+        signUp: function() {
+            this.locker = true;
+            axios({
+                method: 'post',
+                url: this.type === 'join' ? '/join' : 'profile',
+                headers: {
+                    'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
+                },
+                data: {
+                    username: this.username,
+                    password: this.password
+                }
+            })
+            .then(this.submitCallback)
+            .catch(this.failCallback);
+        },
+
         submitCallback: function(res) {
-            if(res.data.result === 'SUCCESS') {
+            if(this.type === 'join' && res.data.result === 'SUCCESS') {
                 alert('가입되었습니다.');
                 location.href = '/';
+            } else if(res.data.result === 'SUCCESS') {
+                alert('회원 정보가 변경되었습니다.\n다시 로그인해주세요.');
+                location.href = 'auth/logout';
             } else {
-                alert('입력하신 아이디 / 비밀번호를 확안해주세요');
+                alert('입력하신 정보를 확안해주세요');
             }
             this.locker = false;
         },
